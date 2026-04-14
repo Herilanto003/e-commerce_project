@@ -6,7 +6,7 @@ from app.db.connexion import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     email = Column(String, unique=True, nullable=False)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
@@ -25,7 +25,7 @@ class User(Base):
 class Profile(Base):
     __tablename__ = "profiles"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     firstname = Column(String)
     lastname = Column(String)
     phone = Column(String)
@@ -39,7 +39,7 @@ class Profile(Base):
 class Category(Base):
     __tablename__ = "categories"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     name = Column(String, nullable=False)
 
     # Si on supprime une catégorie, on peut soit supprimer les produits, soit mettre category_id à NULL
@@ -52,7 +52,7 @@ class Category(Base):
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     name = Column(String, nullable=False)
     description = Column(Text)
     stock_qty = Column(Integer)
@@ -71,7 +71,7 @@ class Product(Base):
 class Order(Base):
     __tablename__ = "orders"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     status = Column(String)
     total_price = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
@@ -85,7 +85,7 @@ class Order(Base):
 class OrderItem(Base):
     __tablename__ = "order_items"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     qty = Column(Integer)
     price = Column(Float)
     order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"))
@@ -98,7 +98,7 @@ class OrderItem(Base):
 class Cart(Base):
     __tablename__ = "carts"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     total_price = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
 
@@ -111,7 +111,7 @@ class Cart(Base):
 class CartItem(Base):
     __tablename__ = "cart_items"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement="auto")
     qty = Column(Integer)
     price = Column(Integer)
     cart_id = Column(Integer, ForeignKey("carts.id", ondelete="CASCADE"))
