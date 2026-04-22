@@ -1,5 +1,5 @@
 from pwdlib import PasswordHash
-from app.db.schema import UserLoginSchema, TokenData, UserRegisterSchema
+from app.db.schema import UserLoginSchema, TokenData, UserRegisterSchema, UserSchema
 from app.db.models import User
 from app.db.connexion import get_db
 from sqlalchemy.orm import Session
@@ -79,6 +79,15 @@ async def get_current_user(
 
     if user is None:
         raise credentials_exception
+
+    return user
+
+
+async def get_admin_role(user: Annotated[UserSchema, Depends(get_current_user)]):
+    if user.role != "ADMIN":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="You don't have Admin role !"
+        )
 
     return user
 

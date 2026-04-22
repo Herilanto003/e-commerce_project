@@ -6,6 +6,7 @@ from app.dependencies.auth_dep import (
     create_access_token,
     get_current_user,
     add_user,
+    get_admin_role,
 )
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
@@ -47,6 +48,12 @@ async def read_users_me(
     current_user: Annotated[UserSchema, Depends(get_current_user)],
 ) -> UserSchema:
     return current_user
+
+
+# Admin route API
+@router.get("/users/admin/me")
+async def admin(admin_user: Annotated[UserSchema, Depends(get_admin_role)]):
+    return admin_user
 
 
 @router.post("/register")
