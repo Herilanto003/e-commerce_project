@@ -3,7 +3,7 @@ from app.db.schema import UserLoginSchema, TokenData, UserRegisterSchema, UserSc
 from app.db.models import User
 from app.db.connexion import get_db
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status, Depends
+from fastapi import HTTPException, status, Depends, Request
 from datetime import timedelta, datetime, timezone
 from app.core.config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM
 from fastapi.security import OAuth2PasswordBearer
@@ -57,14 +57,24 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 
 async def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
     session: Annotated[Session, Depends(get_db)],
+    request: Request,
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    cookie_token = request.cookies.get("access_token")
+
+    if not cookie_token:
+        raise credentials_exception
+
+    token = cookie_token
+    if cookie_token.startswith("Bearer "):
+        token = cookie_token.replace("Bearer ", "")
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

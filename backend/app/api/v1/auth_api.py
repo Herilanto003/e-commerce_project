@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Response
 from app.db.connexion import get_db
 from app.db.schema import UserLoginSchema, UserSchema, Token, UserRegisterSchema
 from app.dependencies.auth_dep import (
@@ -19,12 +19,13 @@ router = APIRouter(tags=["API Auth"])
 
 @router.post("/token")
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    form_data: UserLoginSchema,
     session: Annotated[Session, Depends(get_db)],
-) -> Token:
+    response: Response,
+):
 
     authenticated_user = authenticate_user(
-        user=UserLoginSchema(email=form_data.username, password=form_data.password),
+        user=form_data,
         session=session,
     )
 
@@ -40,7 +41,18 @@ async def login_for_access_token(
         data={"sub": authenticated_user.email}, expires_delta=access_token_expires
     )
 
-    return Token(access_token=access_token, token_type="bearer")
+    response.set_cookie(
+        key="access_token",
+        value=f"Bearer {access_token}",  # Optionnel : ajouter le préfixe Bearer si ton frontend l'attend
+        httponly=True,  # Empêche le JS d'accéder au cookie (protection XSS)
+        max_age=60 * 60 * 24 * 7,  # 7 jours
+        expires=60 * 60 * 24 * 7,
+        samesite="lax",  # Protection contre les attaques CSRF
+        secure=True,  # Nécessite HTTPS (à mettre à False uniquement en local sans SSL)
+    )
+
+    # return Token(access_token=access_token, token_type="bearer")
+    return {"message": "User logged in successfully :)"}
 
 
 @router.get("/users/me")
@@ -61,3 +73,9 @@ async def register_user(
     user: UserRegisterSchema, session: Annotated[Session, Depends(get_db)]
 ):
     return await add_user(user_register=user, session=session)
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie("access_token")
+    return {"message": "Logout"}
