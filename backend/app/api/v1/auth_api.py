@@ -29,7 +29,7 @@ async def login_for_access_token(
         session=session,
     )
 
-    if not authenticate_user:
+    if not authenticated_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -48,7 +48,7 @@ async def login_for_access_token(
         max_age=60 * 60 * 24 * 7,  # 7 jours
         expires=60 * 60 * 24 * 7,
         samesite="lax",  # Protection contre les attaques CSRF
-        secure=True,  # Nécessite HTTPS (à mettre à False uniquement en local sans SSL)
+        secure=False,  # Nécessite HTTPS (à mettre à False uniquement en local sans SSL)
     )
 
     # return Token(access_token=access_token, token_type="bearer")
