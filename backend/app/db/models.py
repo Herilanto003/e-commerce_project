@@ -57,6 +57,7 @@ class Product(Base):
     description = Column(Text)
     stock_qty = Column(Integer)
     unit_price = Column(Float)
+    image_link = Column(String)
     category_id = Column(Integer, ForeignKey("categories.id", ondelete="CASCADE"))
 
     category = relationship("Category", back_populates="products")
