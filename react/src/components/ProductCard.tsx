@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Link } from "@tanstack/react-router";
 import { RippleButton } from "./ui/ripple-button";
 
 export default function ProductCard({
@@ -7,23 +7,19 @@ export default function ProductCard({
   productName,
   productDescription,
   productPrice,
+  productId,
 }: {
   image: string;
   altImage: string;
   productName: string;
   productDescription: string;
   productPrice: string;
+  productId: number;
 }) {
   return (
     <div className="w-full bg-white shadow-lg p-4 rounded-xl flex flex-col items-center gap-4">
       <div className="relative w-40 h-40">
-        <Image
-          src={image}
-          alt={altImage}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-contain"
-        />
+        <img src={image} alt={altImage} className="object-contain" />
       </div>
 
       <div className="flex flex-col items-center gap-2 text-zinc-800">
@@ -33,9 +29,11 @@ export default function ProductCard({
         <p className="font-bold text-4xl">{productPrice}</p>
       </div>
 
-      <RippleButton className="px-10 bg-sky-500 text-white border-none">
-        Add to Cart
-      </RippleButton>
+      <Link to={"/product/" + productId}>
+        <RippleButton className="px-10 bg-sky-500 text-white border-none">
+          Add to cart
+        </RippleButton>
+      </Link>
     </div>
   );
 }

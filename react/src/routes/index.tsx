@@ -2,16 +2,13 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import HeroSection from "@/components/sections/HeroSection";
 import ProductSection from "@/components/sections/ProductSection";
-import { apiUrl } from "@/lib/config";
-import { getProducts } from "@/services/product.service";
-import Link from "next/link";
+import { createFileRoute } from "@tanstack/react-router";
 
-export default async function Home() {
-  console.log(apiUrl);
-  const products = await getProducts();
+export const Route = createFileRoute("/")({
+  component: RouteComponent,
+});
 
-  console.log("Products : ", products);
-
+function RouteComponent() {
   return (
     <div>
       <Header />
@@ -19,7 +16,7 @@ export default async function Home() {
       <main>
         <HeroSection />
 
-        <ProductSection products={products} />
+        <ProductSection />
       </main>
 
       <Footer />

@@ -1,6 +1,3 @@
-"use client";
-
-import Image from "next/image";
 import SectionContainer from "../SectionContainer";
 import { RippleButton } from "../ui/ripple-button";
 import { motion } from "motion/react";
@@ -46,12 +43,10 @@ export default function HeroSection() {
             className="w-full h-full relative"
           >
             <div className="relative md:absolute h-72 md:h-200 md:-bottom-90 w-full">
-              <Image
+              <img
                 src={"/images/iphone_image.png"}
                 alt="iphone image"
-                fill
                 className="object-contain "
-                quality={70}
               />
             </div>
           </motion.div>

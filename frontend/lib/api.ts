@@ -11,6 +11,7 @@ export class ApiError extends Error {
 }
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
+  console.log(`${API_URL}${path}`);
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     credentials: "include",
@@ -18,12 +19,16 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
       "Content-Type": "application/json",
       ...options.headers,
     },
+    cache: "no-store",
   });
+
+  console.log("ress :: ", res);
 
   if (!res.ok) {
     const message = await res.text().catch(() => res.statusText);
+    console.log(res);
     throw new ApiError(res.status, message);
   }
 
-  return res.json();
+  return await res.json();
 }
