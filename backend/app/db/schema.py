@@ -14,6 +14,7 @@ class TokenData(BaseModel):
 
 
 class UserSchema(BaseModel):
+    id: int
     username: str
     email: EmailStr
     role: str
@@ -86,3 +87,22 @@ class CategoryReadSchema(CategorySchema):
 
 class CategoryUpdateSchema(CategorySchema):
     pass
+
+
+"""
+*************************************
+- PAYMENT SCHEMA                    -
+*************************************
+"""
+
+
+class CheckoutItem(BaseModel):
+    id: int
+    name: str
+    price: int
+    quantity: int
+    pass
+
+
+class CheckoutRequest(BaseModel):
+    items: list[CheckoutItem]

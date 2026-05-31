@@ -8,6 +8,7 @@ export default function ProductCard({
   productDescription,
   productPrice,
   productId,
+  stock,
 }: {
   image: string;
   altImage: string;
@@ -15,6 +16,7 @@ export default function ProductCard({
   productDescription: string;
   productPrice: string;
   productId: number;
+  stock: number;
 }) {
   return (
     <div className="w-full bg-white shadow-lg p-4 rounded-xl flex flex-col items-center gap-4">
@@ -26,11 +28,18 @@ export default function ProductCard({
         <h2 className="font-bold text-sky-500">{productName}</h2>
         <p className="font-extralight">{productDescription}</p>
 
+        <p className={`${stock === 0 && "text-red-500"}`}>
+          {stock} left in stock
+        </p>
+
         <p className="font-bold text-4xl">{productPrice}</p>
       </div>
 
-      <Link to={"/product/" + productId}>
-        <RippleButton className="px-10 bg-sky-500 text-white border-none">
+      <Link disabled={stock === 0} to={"/product/" + productId}>
+        <RippleButton
+          disabled={stock === 0}
+          className="px-10 bg-sky-500 text-white border-none"
+        >
           Add to cart
         </RippleButton>
       </Link>

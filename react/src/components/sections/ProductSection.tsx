@@ -30,6 +30,7 @@ export default function ProductSection() {
                   productDescription={product.description}
                   productPrice={`${product.unit_price} Ar`}
                   productId={product.id}
+                  stock={product.stock_qty}
                 />
               ))}
           </div>

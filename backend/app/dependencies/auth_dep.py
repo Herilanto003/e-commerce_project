@@ -68,6 +68,7 @@ async def get_current_user(
     )
 
     cookie_token = request.cookies.get("access_token")
+    print(cookie_token)
 
     if not cookie_token:
         raise credentials_exception

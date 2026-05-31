@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { TiShoppingCart } from "react-icons/ti";
-import { RippleButton } from "./ui/ripple-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { IoCaretDownOutline } from "react-icons/io5";
+import { useCartStore } from "@/features/cart_management/store/cart-store";
 
 export default function NavMenuDesktop() {
+  const { items } = useCartStore();
+
   return (
     <div className="hidden md:flex justify-between gap-3">
       <nav className="flex gap-4 items-center justify-start w-full text-sm">
@@ -31,12 +33,15 @@ export default function NavMenuDesktop() {
         </Link>
       </nav>
 
-      <div className="relative w-10 flex justify-center items-center">
+      <Link
+        to="/checkout"
+        className="relative w-10 flex justify-center items-center"
+      >
         <div className="text-xs font-bold text-white bg-sky-400 w-5 h-5 flex justify-center items-center absolute rounded-full -top-0.5 -right-1">
-          12
+          {items ? items.length : ""}
         </div>
         <TiShoppingCart className="text-3xl" />
-      </div>
+      </Link>
 
       {/* <div className="flex justify-between items-center gap-2">
         <RippleButton className="text-xs border-none bg-sky-400 text-white flex-1">

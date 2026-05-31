@@ -15,8 +15,11 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductProductIdRouteImport } from './routes/product.$productId'
+import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment/success'
+import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment/cancel'
 import { Route as AuthenticatedAccountProfileRouteImport } from './routes/_authenticated/account/profile'
 
 const ContactRoute = ContactRouteImport.update({
@@ -47,6 +50,11 @@ const ProductProductIdRoute = ProductProductIdRouteImport.update({
   path: '/product/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedCheckoutRoute = AuthenticatedCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -57,6 +65,18 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthenticatedPaymentSuccessRoute =
+  AuthenticatedPaymentSuccessRouteImport.update({
+    id: '/payment/success',
+    path: '/payment/success',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPaymentCancelRoute =
+  AuthenticatedPaymentCancelRouteImport.update({
+    id: '/payment/cancel',
+    path: '/payment/cancel',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedAccountProfileRoute =
   AuthenticatedAccountProfileRouteImport.update({
     id: '/account/profile',
@@ -70,8 +90,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
   '/product/$productId': typeof ProductProductIdRoute
   '/account/profile': typeof AuthenticatedAccountProfileRoute
+  '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -79,8 +102,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
   '/product/$productId': typeof ProductProductIdRoute
   '/account/profile': typeof AuthenticatedAccountProfileRoute
+  '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -91,8 +117,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/product/$productId': typeof ProductProductIdRoute
   '/_authenticated/account/profile': typeof AuthenticatedAccountProfileRoute
+  '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -102,8 +131,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/register'
+    | '/checkout'
     | '/product/$productId'
     | '/account/profile'
+    | '/payment/cancel'
+    | '/payment/success'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,8 +143,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/register'
+    | '/checkout'
     | '/product/$productId'
     | '/account/profile'
+    | '/payment/cancel'
+    | '/payment/success'
   id:
     | '__root__'
     | '/'
@@ -122,8 +157,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_authenticated/checkout'
     | '/product/$productId'
     | '/_authenticated/account/profile'
+    | '/_authenticated/payment/cancel'
+    | '/_authenticated/payment/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/checkout': {
+      id: '/_authenticated/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AuthenticatedCheckoutRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_auth/register': {
       id: '/_auth/register'
       path: '/register'
@@ -192,6 +237,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/_authenticated/payment/success': {
+      id: '/_authenticated/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof AuthenticatedPaymentSuccessRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/payment/cancel': {
+      id: '/_authenticated/payment/cancel'
+      path: '/payment/cancel'
+      fullPath: '/payment/cancel'
+      preLoaderRoute: typeof AuthenticatedPaymentCancelRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/account/profile': {
       id: '/_authenticated/account/profile'
@@ -216,11 +275,17 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
   AuthenticatedAccountProfileRoute: typeof AuthenticatedAccountProfileRoute
+  AuthenticatedPaymentCancelRoute: typeof AuthenticatedPaymentCancelRoute
+  AuthenticatedPaymentSuccessRoute: typeof AuthenticatedPaymentSuccessRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
   AuthenticatedAccountProfileRoute: AuthenticatedAccountProfileRoute,
+  AuthenticatedPaymentCancelRoute: AuthenticatedPaymentCancelRoute,
+  AuthenticatedPaymentSuccessRoute: AuthenticatedPaymentSuccessRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

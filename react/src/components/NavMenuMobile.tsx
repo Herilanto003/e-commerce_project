@@ -47,12 +47,12 @@ export default function NavMenuMobile() {
             </Link>
           </nav>
 
-          <div className="mb-4 relative w-10">
+          <Link to="/checkout" className="mb-4 relative w-10">
             <div className="text-xs font-bold text-white bg-sky-400 w-5 h-5 flex justify-center items-center absolute rounded-full -top-2 -right-1">
               12
             </div>
             <TiShoppingCart className="text-4xl" />
-          </div>
+          </Link>
 
           <div className="flex justify-between items-center gap-2">
             <RippleButton className="text-xs border-none bg-sky-400 text-white flex-1">
