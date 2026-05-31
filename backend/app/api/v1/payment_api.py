@@ -78,7 +78,8 @@ async def create_checkout_session(
             success_url=FRONTEND_URL
             + "/payment/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=FRONTEND_URL
-            + "/payment/cancel?session_id={CHECKOUT_SESSION_ID}",
+            + "/payment/cancel?session_id={CHECKOUT_SESSION_ID}&order_id="
+            + str(order_db.id),
             api_key=STRIPE_SECRET_KEY,
             metadata={"order_id": order_db.id},
         )
@@ -143,5 +144,24 @@ async def stripe_webhook(
 
     elif event["type"] == "payment_intent.payment_failed":
         print(f"Paiement échoué !")
+        pass
+
+    else:
+        print("Unhandled event type {}".format(event.type))
 
     return {"status": "ok"}
+
+
+@router.post("/cancel-order/{order_id}")
+async def cancel_order(order_id: int, session: Annotated[Session, Depends(get_db)]):
+    order_db = session.query(Order).where(Order.id == order_id).first()
+    if order_db is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Commande non trouvé !"
+        )
+
+    order_db.status = "cancel"
+
+    session.add(order_db)
+    session.commit()
+    return {"message": "Commande annulé"}

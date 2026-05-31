@@ -1,10 +1,16 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { API_URL } from "@/lib/config";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/payment/cancel")({
   component: RouteComponent,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      order_id: search?.order_id ?? null,
+    };
+  },
 });
 
 function FloatingParticle({ index }: { index: number }) {
@@ -54,7 +60,33 @@ function RouteComponent() {
   const [visible, setVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
+  const { order_id } = useSearch({ from: "/_authenticated/payment/cancel" });
+
+  const cancelOrder = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/v1/payment/cancel-order/${order_id}`,
+        {
+          credentials: "include",
+          method: "POST",
+        },
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+        throw new Error("error");
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    cancelOrder();
+
     const t1 = setTimeout(() => setVisible(true), 100);
     const t2 = setTimeout(() => setShowDetails(true), 600);
     return () => {
@@ -62,6 +94,7 @@ function RouteComponent() {
       clearTimeout(t2);
     };
   }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-sky-50">
       <Header />
