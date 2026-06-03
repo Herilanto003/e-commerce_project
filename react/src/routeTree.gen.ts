@@ -22,7 +22,13 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment/success'
 import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment/cancel'
 import { Route as AuthenticatedAccountProfileRouteImport } from './routes/_authenticated/account/profile'
+import { Route as AuthenticatedAdmin_spaceAdminUserListRouteImport } from './routes/_authenticated/_admin_space/admin/user-list'
+import { Route as AuthenticatedAdmin_spaceAdminProductNewRouteImport } from './routes/_authenticated/_admin_space/admin/product-new'
+import { Route as AuthenticatedAdmin_spaceAdminProductListRouteImport } from './routes/_authenticated/_admin_space/admin/product-list'
+import { Route as AuthenticatedAdmin_spaceAdminOrderListRouteImport } from './routes/_authenticated/_admin_space/admin/order-list'
 import { Route as AuthenticatedAdmin_spaceAdminDashboardRouteImport } from './routes/_authenticated/_admin_space/admin/dashboard'
+import { Route as AuthenticatedAdmin_spaceAdminCategoryNewRouteImport } from './routes/_authenticated/_admin_space/admin/category-new'
+import { Route as AuthenticatedAdmin_spaceAdminCategoryListRouteImport } from './routes/_authenticated/_admin_space/admin/category-list'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -90,10 +96,46 @@ const AuthenticatedAccountProfileRoute =
     path: '/account/profile',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAdmin_spaceAdminUserListRoute =
+  AuthenticatedAdmin_spaceAdminUserListRouteImport.update({
+    id: '/admin/user-list',
+    path: '/admin/user-list',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
+const AuthenticatedAdmin_spaceAdminProductNewRoute =
+  AuthenticatedAdmin_spaceAdminProductNewRouteImport.update({
+    id: '/admin/product-new',
+    path: '/admin/product-new',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
+const AuthenticatedAdmin_spaceAdminProductListRoute =
+  AuthenticatedAdmin_spaceAdminProductListRouteImport.update({
+    id: '/admin/product-list',
+    path: '/admin/product-list',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
+const AuthenticatedAdmin_spaceAdminOrderListRoute =
+  AuthenticatedAdmin_spaceAdminOrderListRouteImport.update({
+    id: '/admin/order-list',
+    path: '/admin/order-list',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
 const AuthenticatedAdmin_spaceAdminDashboardRoute =
   AuthenticatedAdmin_spaceAdminDashboardRouteImport.update({
     id: '/admin/dashboard',
     path: '/admin/dashboard',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
+const AuthenticatedAdmin_spaceAdminCategoryNewRoute =
+  AuthenticatedAdmin_spaceAdminCategoryNewRouteImport.update({
+    id: '/admin/category-new',
+    path: '/admin/category-new',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
+const AuthenticatedAdmin_spaceAdminCategoryListRoute =
+  AuthenticatedAdmin_spaceAdminCategoryListRouteImport.update({
+    id: '/admin/category-list',
+    path: '/admin/category-list',
     getParentRoute: () => AuthenticatedAdmin_spaceRoute,
   } as any)
 
@@ -108,7 +150,13 @@ export interface FileRoutesByFullPath {
   '/account/profile': typeof AuthenticatedAccountProfileRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/admin/category-list': typeof AuthenticatedAdmin_spaceAdminCategoryListRoute
+  '/admin/category-new': typeof AuthenticatedAdmin_spaceAdminCategoryNewRoute
   '/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
+  '/admin/order-list': typeof AuthenticatedAdmin_spaceAdminOrderListRoute
+  '/admin/product-list': typeof AuthenticatedAdmin_spaceAdminProductListRoute
+  '/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
+  '/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,7 +169,13 @@ export interface FileRoutesByTo {
   '/account/profile': typeof AuthenticatedAccountProfileRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/admin/category-list': typeof AuthenticatedAdmin_spaceAdminCategoryListRoute
+  '/admin/category-new': typeof AuthenticatedAdmin_spaceAdminCategoryNewRoute
   '/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
+  '/admin/order-list': typeof AuthenticatedAdmin_spaceAdminOrderListRoute
+  '/admin/product-list': typeof AuthenticatedAdmin_spaceAdminProductListRoute
+  '/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
+  '/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -138,7 +192,13 @@ export interface FileRoutesById {
   '/_authenticated/account/profile': typeof AuthenticatedAccountProfileRoute
   '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/_authenticated/_admin_space/admin/category-list': typeof AuthenticatedAdmin_spaceAdminCategoryListRoute
+  '/_authenticated/_admin_space/admin/category-new': typeof AuthenticatedAdmin_spaceAdminCategoryNewRoute
   '/_authenticated/_admin_space/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
+  '/_authenticated/_admin_space/admin/order-list': typeof AuthenticatedAdmin_spaceAdminOrderListRoute
+  '/_authenticated/_admin_space/admin/product-list': typeof AuthenticatedAdmin_spaceAdminProductListRoute
+  '/_authenticated/_admin_space/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
+  '/_authenticated/_admin_space/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,7 +213,13 @@ export interface FileRouteTypes {
     | '/account/profile'
     | '/payment/cancel'
     | '/payment/success'
+    | '/admin/category-list'
+    | '/admin/category-new'
     | '/admin/dashboard'
+    | '/admin/order-list'
+    | '/admin/product-list'
+    | '/admin/product-new'
+    | '/admin/user-list'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,7 +232,13 @@ export interface FileRouteTypes {
     | '/account/profile'
     | '/payment/cancel'
     | '/payment/success'
+    | '/admin/category-list'
+    | '/admin/category-new'
     | '/admin/dashboard'
+    | '/admin/order-list'
+    | '/admin/product-list'
+    | '/admin/product-new'
+    | '/admin/user-list'
   id:
     | '__root__'
     | '/'
@@ -182,7 +254,13 @@ export interface FileRouteTypes {
     | '/_authenticated/account/profile'
     | '/_authenticated/payment/cancel'
     | '/_authenticated/payment/success'
+    | '/_authenticated/_admin_space/admin/category-list'
+    | '/_authenticated/_admin_space/admin/category-new'
     | '/_authenticated/_admin_space/admin/dashboard'
+    | '/_authenticated/_admin_space/admin/order-list'
+    | '/_authenticated/_admin_space/admin/product-list'
+    | '/_authenticated/_admin_space/admin/product-new'
+    | '/_authenticated/_admin_space/admin/user-list'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -287,11 +365,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/_admin_space/admin/user-list': {
+      id: '/_authenticated/_admin_space/admin/user-list'
+      path: '/admin/user-list'
+      fullPath: '/admin/user-list'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminUserListRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
+    '/_authenticated/_admin_space/admin/product-new': {
+      id: '/_authenticated/_admin_space/admin/product-new'
+      path: '/admin/product-new'
+      fullPath: '/admin/product-new'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminProductNewRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
+    '/_authenticated/_admin_space/admin/product-list': {
+      id: '/_authenticated/_admin_space/admin/product-list'
+      path: '/admin/product-list'
+      fullPath: '/admin/product-list'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminProductListRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
+    '/_authenticated/_admin_space/admin/order-list': {
+      id: '/_authenticated/_admin_space/admin/order-list'
+      path: '/admin/order-list'
+      fullPath: '/admin/order-list'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminOrderListRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
     '/_authenticated/_admin_space/admin/dashboard': {
       id: '/_authenticated/_admin_space/admin/dashboard'
       path: '/admin/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
+    '/_authenticated/_admin_space/admin/category-new': {
+      id: '/_authenticated/_admin_space/admin/category-new'
+      path: '/admin/category-new'
+      fullPath: '/admin/category-new'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminCategoryNewRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
+    '/_authenticated/_admin_space/admin/category-list': {
+      id: '/_authenticated/_admin_space/admin/category-list'
+      path: '/admin/category-list'
+      fullPath: '/admin/category-list'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminCategoryListRouteImport
       parentRoute: typeof AuthenticatedAdmin_spaceRoute
     }
   }
@@ -310,13 +430,31 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface AuthenticatedAdmin_spaceRouteChildren {
+  AuthenticatedAdmin_spaceAdminCategoryListRoute: typeof AuthenticatedAdmin_spaceAdminCategoryListRoute
+  AuthenticatedAdmin_spaceAdminCategoryNewRoute: typeof AuthenticatedAdmin_spaceAdminCategoryNewRoute
   AuthenticatedAdmin_spaceAdminDashboardRoute: typeof AuthenticatedAdmin_spaceAdminDashboardRoute
+  AuthenticatedAdmin_spaceAdminOrderListRoute: typeof AuthenticatedAdmin_spaceAdminOrderListRoute
+  AuthenticatedAdmin_spaceAdminProductListRoute: typeof AuthenticatedAdmin_spaceAdminProductListRoute
+  AuthenticatedAdmin_spaceAdminProductNewRoute: typeof AuthenticatedAdmin_spaceAdminProductNewRoute
+  AuthenticatedAdmin_spaceAdminUserListRoute: typeof AuthenticatedAdmin_spaceAdminUserListRoute
 }
 
 const AuthenticatedAdmin_spaceRouteChildren: AuthenticatedAdmin_spaceRouteChildren =
   {
+    AuthenticatedAdmin_spaceAdminCategoryListRoute:
+      AuthenticatedAdmin_spaceAdminCategoryListRoute,
+    AuthenticatedAdmin_spaceAdminCategoryNewRoute:
+      AuthenticatedAdmin_spaceAdminCategoryNewRoute,
     AuthenticatedAdmin_spaceAdminDashboardRoute:
       AuthenticatedAdmin_spaceAdminDashboardRoute,
+    AuthenticatedAdmin_spaceAdminOrderListRoute:
+      AuthenticatedAdmin_spaceAdminOrderListRoute,
+    AuthenticatedAdmin_spaceAdminProductListRoute:
+      AuthenticatedAdmin_spaceAdminProductListRoute,
+    AuthenticatedAdmin_spaceAdminProductNewRoute:
+      AuthenticatedAdmin_spaceAdminProductNewRoute,
+    AuthenticatedAdmin_spaceAdminUserListRoute:
+      AuthenticatedAdmin_spaceAdminUserListRoute,
   }
 
 const AuthenticatedAdmin_spaceRouteWithChildren =
