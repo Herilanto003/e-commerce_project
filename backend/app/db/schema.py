@@ -101,6 +101,7 @@ class CheckoutItem(BaseModel):
     name: str
     price: int
     quantity: int
+    product_id: int
     pass
 
 

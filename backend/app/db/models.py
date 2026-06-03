@@ -100,7 +100,8 @@ class Cart(Base):
     __tablename__ = "carts"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    total_price = Column(Float)
+    # total_price = Column(Float)
+    status = Column(String)  # active, converted, canceled
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
 
     user = relationship("User", back_populates="cart")

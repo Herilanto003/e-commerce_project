@@ -1,10 +1,16 @@
-import * as React from "react";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
-import type { AuthContextType } from "@/features/auth/context/AuthContext";
+
+interface AuthState {
+  isAuthenticated: boolean;
+  user: { id: string; username: string; email: string } | null;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+  toggleRefresh: () => void;
+}
 
 interface MyRouterContext {
-  auth: AuthContextType;
+  auth: AuthState;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -13,9 +19,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootComponent() {
   return (
-    <React.Fragment>
+    <>
       <Toaster richColors />
       <Outlet />
-    </React.Fragment>
+    </>
   );
 }

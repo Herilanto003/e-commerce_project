@@ -40,7 +40,7 @@ export default function ProductCard({
           disabled={stock === 0}
           className="px-10 bg-sky-500 text-white border-none"
         >
-          Add to cart
+          Voir plus
         </RippleButton>
       </Link>
     </div>

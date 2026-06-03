@@ -3,7 +3,7 @@ from app.db.schema import CheckoutRequest, CheckoutItem, UserSchema
 from app.core.config import STRIPE_WEBHOOK_SECRET, STRIPE_SECRET_KEY, FRONTEND_URL
 from sqlalchemy.orm import Session
 from app.db.connexion import get_db
-from app.db.models import Product, Order, OrderItem
+from app.db.models import Product, Order, OrderItem, Cart, CartItem
 from typing import Annotated
 from app.dependencies.auth_dep import get_current_user
 import stripe
@@ -32,7 +32,9 @@ async def create_checkout_session(
         for checkoutItemData in data.items:
             # Pour chaque item , il faut vérifier l'état du stock
             product = (
-                session.query(Product).where(Product.id == checkoutItemData.id).first()
+                session.query(Product)
+                .where(Product.id == checkoutItemData.product_id)
+                .first()
             )
             if product is None:
                 raise HTTPException(
@@ -52,12 +54,42 @@ async def create_checkout_session(
                 qty=checkoutItemData.quantity,
                 price=checkoutItemData.price,
                 order_id=order_db.id,
-                product_id=checkoutItemData.id,
+                product_id=checkoutItemData.product_id,
             )
 
             session.add(order_item)
 
             pass
+
+        # Changer le status du cart en converted
+        for checkoutItemData in data.items:
+            # Vérifier si l'item existe
+            cart_item = (
+                session.query(CartItem)
+                .where(CartItem.id == checkoutItemData.id)
+                .first()
+            )
+            if not cart_item:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="La ligne de commande n existe pas",
+                )
+
+            cart = (
+                session.query(Cart)
+                .filter(Cart.id == cart_item.cart_id, Cart.status == "active")
+                .first()
+            )
+            if not cart_item:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="La ligne de commande n existe pas",
+                )
+
+            cart.status = "converted"
+
+            session.add(cart)
+            break
 
         line_items = [
             {
@@ -137,6 +169,7 @@ async def stripe_webhook(
             )
             product.stock_qty = product.stock_qty - order_item.qty
             session.add(product)
+            print(product)
             pass
 
         # Commiter tous les changements

@@ -5,22 +5,23 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useCartStore } from "@/features/cart_management/store/cart-store";
+import { useActionCart } from "@/features/cart_management/hooks/useActionCart";
+import { useGetAllCarts } from "@/features/cart_management/hooks/useGetAllCarts";
+// import { useCartStore } from "@/features/cart_management/store/cart-store";
 import { API_URL } from "@/lib/config";
 import { createFileRoute } from "@tanstack/react-router";
 import React from "react";
 import { toast } from "sonner";
+// import React from "react";
+// import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { items, addItem, removeItem, clearItem } = useCartStore();
-  const total = items.reduce(
-    (acc, item) => acc + (item.price === undefined ? 0 : item.price),
-    0,
-  );
+  const { pending, carts, refetch, refreshing } = useGetAllCarts();
+  const { increaseQuantity, decreaseQuantity, clearCart } = useActionCart();
 
   // Allez dans le payements
   const [paymentPending, setPaymentPending] = React.useState<boolean>(false);
@@ -32,7 +33,7 @@ function RouteComponent() {
         {
           method: "POST",
           credentials: "include",
-          body: JSON.stringify({ items }),
+          body: JSON.stringify({ items: carts }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -67,7 +68,9 @@ function RouteComponent() {
 
       <main className="min-h-screen flex justify-center items-center -mt-10 py-12">
         <SectionContainer>
-          {total === 0 || items.length === 0 ? (
+          {pending ? (
+            <div>Chargement...</div>
+          ) : carts === null || carts.length === 0 ? (
             <div>
               <h1>Your cart is empty</h1>
             </div>
@@ -82,7 +85,7 @@ function RouteComponent() {
 
                 <CardContent>
                   <ul className="flex flex-col gap-4">
-                    {items.map((item, key) => (
+                    {carts.map((item, key) => (
                       <li
                         key={key}
                         className="flex flex-col md:flex-row md:items-center md:gap-10 gap-2"
@@ -103,7 +106,11 @@ function RouteComponent() {
                         </div>
                         <div>
                           <ButtonGroup>
-                            <Button onClick={() => removeItem(item.id)}>
+                            <Button
+                              onClick={async () =>
+                                await decreaseQuantity(item.product_id, refetch)
+                              }
+                            >
                               -
                             </Button>
                             <Input
@@ -112,7 +119,10 @@ function RouteComponent() {
                               value={item.quantity}
                             />
                             <Button
-                              onClick={() => addItem({ ...item, quantity: 1 })}
+                              onClick={async () =>
+                                await increaseQuantity(item.product_id, refetch)
+                              }
+                              disabled={refreshing}
                             >
                               +
                             </Button>
@@ -126,9 +136,14 @@ function RouteComponent() {
 
               <div className="mt-4">
                 <Button disabled={paymentPending} onClick={handlePayment}>
-                  {paymentPending ? "..." : "Proceed to payment"}
+                  Proceed to payment
                 </Button>
-                <Button onClick={clearItem}>Clear cart</Button>
+                <Button
+                  disabled={refreshing}
+                  onClick={async () => await clearCart(refetch)}
+                >
+                  Clear cart
+                </Button>
               </div>
             </div>
           )}

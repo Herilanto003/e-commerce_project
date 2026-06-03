@@ -1,13 +1,12 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SectionContainer from "@/components/SectionContainer";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useGetOneProduct } from "@/features/product_manegement/hooks/useGetProduct";
 import { API_URL } from "@/lib/config";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCartStore } from "@/features/cart_management/store/cart-store";
+import { toast } from "sonner";
+import React from "react";
 
 export const Route = createFileRoute("/product/$productId")({
   component: RouteComponent,
@@ -23,20 +22,38 @@ function RouteComponent() {
   // *** -------------------------------------
   // *** Gestion de panier (cart)
   // *** -------------------------------------
-  const { items, addItem, removeItem } = useCartStore();
-  const cartItem = items.find((item) => item.id === productId);
-  const quantity = cartItem ? cartItem.quantity : 0;
-  const handleAddItem = () => {
-    addItem({
-      id: productId,
-      name: product?.name,
-      price: product?.unit_price,
-      imageUrl: product?.image_link,
-      quantity: 1,
-    });
-  };
-  const handleRemoveItem = () => {
-    removeItem(productId);
+
+  // Ajout dans le panier
+  const navigate = useNavigate();
+  const [pendingAddToCart, setPendingAddToCart] = React.useState(false);
+  const handleAddToCart = async () => {
+    setPendingAddToCart(true);
+    try {
+      const response = await fetch(
+        `${API_URL}/api/v1/cart/items/new?product_id=${productId}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (response.status === 401) {
+          toast.error("Vous n'êtes pas connectés !");
+          return;
+        }
+        console.log(errorData);
+        throw new Error("Error");
+      }
+
+      navigate({ to: "/checkout" });
+    } catch (error) {
+      console.log(error);
+      toast.error("Erreur technique en cours de réparation !");
+    } finally {
+      setPendingAddToCart(false);
+    }
   };
 
   return (
@@ -62,13 +79,16 @@ function RouteComponent() {
 
               <p className="font-light text-gray-700">{product?.description}</p>
 
-              <div className="flex justify-center items-center md:justify-start">
+              {/* <div className="flex justify-center items-center md:justify-start">
                 <ButtonGroup>
                   <Button onClick={handleRemoveItem}>-</Button>
                   <Input readOnly className="w-10" value={quantity} />
                   <Button onClick={handleAddItem}>+</Button>
                 </ButtonGroup>
-              </div>
+              </div> */}
+              <Button onClick={handleAddToCart} disabled={pendingAddToCart}>
+                {pendingAddToCart ? "..." : "Ajouter dans le panier"}
+              </Button>
             </div>
           </div>
         </SectionContainer>

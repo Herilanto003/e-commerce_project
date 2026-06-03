@@ -41,8 +41,6 @@ export function useLogin() {
 
       console.log("Data :", data);
 
-      localStorage.setItem("auth_user", JSON.stringify(data));
-
       return {
         isSuccess: true,
         message: "Utilisateur connecté avec succès !",

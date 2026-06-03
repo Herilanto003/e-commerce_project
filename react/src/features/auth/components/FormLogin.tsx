@@ -26,19 +26,18 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import React from "react";
-import { useLogin } from "../hooks/useLogin";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 
 export default function FormLogin() {
   const navigate = useNavigate();
   const auth = useAuth();
+  const [isPending, setIsPending] = useState(false);
 
   // *** -------------------------------------
   // *** Validation du formulaire
   // *** -------------------------------------
-  const { login, isPending } = useLogin();
   const form = useForm<loginZodType>({
     resolver: zodResolver(loginZodSchema),
     defaultValues: {
@@ -48,14 +47,22 @@ export default function FormLogin() {
   });
   const onSubmit = async (data: loginZodType) => {
     console.log(data);
-    const res = await login(data);
-    if (res.isSuccess) {
-      toast.success(res.message);
-      auth.setUser(res.data);
+    setIsPending(true);
+    try {
+      await auth.login(data.email, data.password);
       navigate({ to: "/" });
-    } else {
-      toast.error(res.message);
+    } catch (error) {
+      toast.error("Email ou mot de passe invalid !");
+    } finally {
+      setIsPending(false);
     }
+    // if (res.isSuccess) {
+    //   toast.success(res.message);
+    //   auth.setUser(res.data);
+    //   navigate({ to: "/" });
+    // } else {
+    //   toast.error(res.message);
+    // }
   };
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 

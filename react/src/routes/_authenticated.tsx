@@ -1,8 +1,29 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useAuth } from "@/features/auth/context/AuthContext";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
+import { useEffect } from "react";
+
+// export const Route = createFileRoute("/_authenticated")({
+//   beforeLoad: ({ context, location }) => {
+//     if (!context.auth.user) {
+//       throw redirect({
+//         to: "/login",
+//         search: {
+//           redirect: location.href,
+//         },
+//       });
+//     }
+//   },
+//   component: RouteComponent,
+// });
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.user) {
+  beforeLoad: async ({ context, location }) => {
+    if (!context.auth.isAuthenticated) {
       throw redirect({
         to: "/login",
         search: {
@@ -15,6 +36,14 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function RouteComponent() {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate({ to: "/" });
+    }
+  }, []);
   return (
     <>
       <Outlet />
