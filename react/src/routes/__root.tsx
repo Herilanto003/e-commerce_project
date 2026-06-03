@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: { id: string; username: string; email: string } | null;
+  user: { id: string; username: string; email: string; role: string } | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   toggleRefresh: () => void;

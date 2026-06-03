@@ -14,7 +14,7 @@ import LogoutDialog from "@/features/auth/components/logout-dialog";
 import { useState } from "react";
 
 export default function NavMenuDesktop() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [open, setOpen] = useState(false);
 
   return (
@@ -69,11 +69,18 @@ export default function NavMenuDesktop() {
           <DropdownMenuContent className="w-40" align="start">
             <DropdownMenuGroup>
               {isAuthenticated ? (
-                <DropdownMenuItem asChild>
-                  <Button variant={"ghost"} onClick={() => setOpen(true)}>
-                    Deconnexion
-                  </Button>
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem asChild>
+                    <Button variant={"ghost"} onClick={() => setOpen(true)}>
+                      Deconnexion
+                    </Button>
+                  </DropdownMenuItem>
+                  {user?.role === "ADMIN" && (
+                    <DropdownMenuItem>
+                      <Link to={"/admin/dashboard"}>Admin</Link>
+                    </DropdownMenuItem>
+                  )}
+                </>
               ) : (
                 <>
                   <DropdownMenuItem>

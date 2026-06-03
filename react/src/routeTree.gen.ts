@@ -16,11 +16,13 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductProductIdRouteImport } from './routes/product.$productId'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
+import { Route as AuthenticatedAdmin_spaceRouteImport } from './routes/_authenticated/_admin_space'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment/success'
 import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment/cancel'
 import { Route as AuthenticatedAccountProfileRouteImport } from './routes/_authenticated/account/profile'
+import { Route as AuthenticatedAdmin_spaceAdminDashboardRouteImport } from './routes/_authenticated/_admin_space/admin/dashboard'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -55,6 +57,11 @@ const AuthenticatedCheckoutRoute = AuthenticatedCheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdmin_spaceRoute =
+  AuthenticatedAdmin_spaceRouteImport.update({
+    id: '/_admin_space',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -83,6 +90,12 @@ const AuthenticatedAccountProfileRoute =
     path: '/account/profile',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAdmin_spaceAdminDashboardRoute =
+  AuthenticatedAdmin_spaceAdminDashboardRouteImport.update({
+    id: '/admin/dashboard',
+    path: '/admin/dashboard',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/account/profile': typeof AuthenticatedAccountProfileRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,6 +121,7 @@ export interface FileRoutesByTo {
   '/account/profile': typeof AuthenticatedAccountProfileRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -117,11 +132,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_authenticated/_admin_space': typeof AuthenticatedAdmin_spaceRouteWithChildren
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/product/$productId': typeof ProductProductIdRoute
   '/_authenticated/account/profile': typeof AuthenticatedAccountProfileRoute
   '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/_authenticated/_admin_space/admin/dashboard': typeof AuthenticatedAdmin_spaceAdminDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,6 +153,7 @@ export interface FileRouteTypes {
     | '/account/profile'
     | '/payment/cancel'
     | '/payment/success'
+    | '/admin/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -148,6 +166,7 @@ export interface FileRouteTypes {
     | '/account/profile'
     | '/payment/cancel'
     | '/payment/success'
+    | '/admin/dashboard'
   id:
     | '__root__'
     | '/'
@@ -157,11 +176,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_authenticated/_admin_space'
     | '/_authenticated/checkout'
     | '/product/$productId'
     | '/_authenticated/account/profile'
     | '/_authenticated/payment/cancel'
     | '/_authenticated/payment/success'
+    | '/_authenticated/_admin_space/admin/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -224,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCheckoutRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/_admin_space': {
+      id: '/_authenticated/_admin_space'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_auth/register': {
       id: '/_auth/register'
       path: '/register'
@@ -259,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/_admin_space/admin/dashboard': {
+      id: '/_authenticated/_admin_space/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
   }
 }
 
@@ -274,7 +309,23 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface AuthenticatedAdmin_spaceRouteChildren {
+  AuthenticatedAdmin_spaceAdminDashboardRoute: typeof AuthenticatedAdmin_spaceAdminDashboardRoute
+}
+
+const AuthenticatedAdmin_spaceRouteChildren: AuthenticatedAdmin_spaceRouteChildren =
+  {
+    AuthenticatedAdmin_spaceAdminDashboardRoute:
+      AuthenticatedAdmin_spaceAdminDashboardRoute,
+  }
+
+const AuthenticatedAdmin_spaceRouteWithChildren =
+  AuthenticatedAdmin_spaceRoute._addFileChildren(
+    AuthenticatedAdmin_spaceRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
+  AuthenticatedAdmin_spaceRoute: typeof AuthenticatedAdmin_spaceRouteWithChildren
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
   AuthenticatedAccountProfileRoute: typeof AuthenticatedAccountProfileRoute
   AuthenticatedPaymentCancelRoute: typeof AuthenticatedPaymentCancelRoute
@@ -282,6 +333,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdmin_spaceRoute: AuthenticatedAdmin_spaceRouteWithChildren,
   AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
   AuthenticatedAccountProfileRoute: AuthenticatedAccountProfileRoute,
   AuthenticatedPaymentCancelRoute: AuthenticatedPaymentCancelRoute,

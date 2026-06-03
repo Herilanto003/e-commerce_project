@@ -16,7 +16,7 @@ import { useState } from "react";
 import LogoutDialog from "@/features/auth/components/logout-dialog";
 
 export default function NavMenuMobile() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -58,12 +58,16 @@ export default function NavMenuMobile() {
 
             <div className="flex justify-between items-center gap-2 mt-4">
               {isAuthenticated ? (
-                <RippleButton
-                  onClick={() => setOpen(true)}
-                  className="bg-red-500 text-white border-none"
-                >
-                  Deconnexion
-                </RippleButton>
+                <>
+                  {" "}
+                  <RippleButton
+                    onClick={() => setOpen(true)}
+                    className="bg-red-500 text-white border-none"
+                  >
+                    Deconnexion
+                  </RippleButton>
+                  .<Link to="/admin/dashboard">Admin</Link>
+                </>
               ) : (
                 <>
                   <Link to="/register">S'inscrire</Link>
