@@ -66,7 +66,9 @@ export default function NavMenuMobile() {
                   >
                     Deconnexion
                   </RippleButton>
-                  .<Link to="/admin/dashboard">Admin</Link>
+                  {user?.role === "ADMIN" && (
+                    <Link to="/admin/dashboard">Admin</Link>
+                  )}
                 </>
               ) : (
                 <>
