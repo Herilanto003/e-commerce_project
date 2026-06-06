@@ -145,7 +145,10 @@ export default function SidebarAdmin() {
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton size={"lg"}>
+                  <SidebarMenuButton
+                    size={"lg"}
+                    className="data-[state=open]:bg-sidebar-accent data-state-open:text-sidebar-accent-foreground"
+                  >
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-medium">
                         {user?.username}

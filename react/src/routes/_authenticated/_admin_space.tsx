@@ -24,7 +24,7 @@ function RouteComponent() {
           <span>Dashboard</span>
         </header>
 
-        <div className="m-auto max-w-480 w-5xl">
+        <div className="m-auto max-w-480 w-5xl py-5">
           <Outlet />
         </div>
       </main>
