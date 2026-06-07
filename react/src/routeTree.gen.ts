@@ -29,6 +29,7 @@ import { Route as AuthenticatedAdmin_spaceAdminOrderListRouteImport } from './ro
 import { Route as AuthenticatedAdmin_spaceAdminDashboardRouteImport } from './routes/_authenticated/_admin_space/admin/dashboard'
 import { Route as AuthenticatedAdmin_spaceAdminCategoryNewRouteImport } from './routes/_authenticated/_admin_space/admin/category-new'
 import { Route as AuthenticatedAdmin_spaceAdminCategoryListRouteImport } from './routes/_authenticated/_admin_space/admin/category-list'
+import { Route as AuthenticatedAdmin_spaceAdminEditProductProductIdRouteImport } from './routes/_authenticated/_admin_space/admin/edit/product.$productId'
 import { Route as AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRouteImport } from './routes/_authenticated/_admin_space/admin/edit/category.$categoryId'
 
 const ContactRoute = ContactRouteImport.update({
@@ -139,6 +140,12 @@ const AuthenticatedAdmin_spaceAdminCategoryListRoute =
     path: '/admin/category-list',
     getParentRoute: () => AuthenticatedAdmin_spaceRoute,
   } as any)
+const AuthenticatedAdmin_spaceAdminEditProductProductIdRoute =
+  AuthenticatedAdmin_spaceAdminEditProductProductIdRouteImport.update({
+    id: '/admin/edit/product/$productId',
+    path: '/admin/edit/product/$productId',
+    getParentRoute: () => AuthenticatedAdmin_spaceRoute,
+  } as any)
 const AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute =
   AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRouteImport.update({
     id: '/admin/edit/category/$categoryId',
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
   '/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
   '/admin/edit/category/$categoryId': typeof AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute
+  '/admin/edit/product/$productId': typeof AuthenticatedAdmin_spaceAdminEditProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -185,6 +193,7 @@ export interface FileRoutesByTo {
   '/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
   '/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
   '/admin/edit/category/$categoryId': typeof AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute
+  '/admin/edit/product/$productId': typeof AuthenticatedAdmin_spaceAdminEditProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -209,6 +218,7 @@ export interface FileRoutesById {
   '/_authenticated/_admin_space/admin/product-new': typeof AuthenticatedAdmin_spaceAdminProductNewRoute
   '/_authenticated/_admin_space/admin/user-list': typeof AuthenticatedAdmin_spaceAdminUserListRoute
   '/_authenticated/_admin_space/admin/edit/category/$categoryId': typeof AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute
+  '/_authenticated/_admin_space/admin/edit/product/$productId': typeof AuthenticatedAdmin_spaceAdminEditProductProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/admin/product-new'
     | '/admin/user-list'
     | '/admin/edit/category/$categoryId'
+    | '/admin/edit/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/admin/product-new'
     | '/admin/user-list'
     | '/admin/edit/category/$categoryId'
+    | '/admin/edit/product/$productId'
   id:
     | '__root__'
     | '/'
@@ -274,6 +286,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_admin_space/admin/product-new'
     | '/_authenticated/_admin_space/admin/user-list'
     | '/_authenticated/_admin_space/admin/edit/category/$categoryId'
+    | '/_authenticated/_admin_space/admin/edit/product/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -427,6 +440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminCategoryListRouteImport
       parentRoute: typeof AuthenticatedAdmin_spaceRoute
     }
+    '/_authenticated/_admin_space/admin/edit/product/$productId': {
+      id: '/_authenticated/_admin_space/admin/edit/product/$productId'
+      path: '/admin/edit/product/$productId'
+      fullPath: '/admin/edit/product/$productId'
+      preLoaderRoute: typeof AuthenticatedAdmin_spaceAdminEditProductProductIdRouteImport
+      parentRoute: typeof AuthenticatedAdmin_spaceRoute
+    }
     '/_authenticated/_admin_space/admin/edit/category/$categoryId': {
       id: '/_authenticated/_admin_space/admin/edit/category/$categoryId'
       path: '/admin/edit/category/$categoryId'
@@ -458,6 +478,7 @@ interface AuthenticatedAdmin_spaceRouteChildren {
   AuthenticatedAdmin_spaceAdminProductNewRoute: typeof AuthenticatedAdmin_spaceAdminProductNewRoute
   AuthenticatedAdmin_spaceAdminUserListRoute: typeof AuthenticatedAdmin_spaceAdminUserListRoute
   AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute: typeof AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute
+  AuthenticatedAdmin_spaceAdminEditProductProductIdRoute: typeof AuthenticatedAdmin_spaceAdminEditProductProductIdRoute
 }
 
 const AuthenticatedAdmin_spaceRouteChildren: AuthenticatedAdmin_spaceRouteChildren =
@@ -478,6 +499,8 @@ const AuthenticatedAdmin_spaceRouteChildren: AuthenticatedAdmin_spaceRouteChildr
       AuthenticatedAdmin_spaceAdminUserListRoute,
     AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute:
       AuthenticatedAdmin_spaceAdminEditCategoryCategoryIdRoute,
+    AuthenticatedAdmin_spaceAdminEditProductProductIdRoute:
+      AuthenticatedAdmin_spaceAdminEditProductProductIdRoute,
   }
 
 const AuthenticatedAdmin_spaceRouteWithChildren =

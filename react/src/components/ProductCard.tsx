@@ -26,7 +26,11 @@ export default function ProductCard({
 
       <div className="flex flex-col items-center gap-2 text-zinc-800">
         <h2 className="font-bold text-sky-500">{productName}</h2>
-        <p className="font-extralight">{productDescription}</p>
+        <p className="font-extralight">
+          {productDescription.length > 60
+            ? productDescription.slice(0, 60) + "..."
+            : productDescription}
+        </p>
 
         <p className={`${stock === 0 && "text-red-500"}`}>
           {stock} left in stock
