@@ -107,3 +107,18 @@ class CheckoutItem(BaseModel):
 
 class CheckoutRequest(BaseModel):
     items: list[CheckoutItem]
+
+
+"""
+*************************************
+- ORDER SCHEMA                    -
+*************************************
+"""
+
+
+class OrderSchema(BaseModel):
+    id: int
+    status: str
+    total_price: float
+    username: str
+    total_item: int
