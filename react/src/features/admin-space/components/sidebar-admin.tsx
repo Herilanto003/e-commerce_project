@@ -59,8 +59,10 @@ export default function SidebarAdmin() {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    <LayoutDashboard /> Dashboard
+                  <SidebarMenuButton asChild>
+                    <Link to="/admin/dashboard">
+                      <LayoutDashboard /> Dashboard
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
 
